@@ -1,28 +1,29 @@
-def encrypt(plaintext, key):
+def encrypt(txt, key):
     ciphertext = ""
-    for char in plaintext.upper():
+    for char in txt:
         if char.isalpha():
-            index = ord(char) - ord('A')
-            ciphertext += key[index]
+            newchar = (ord(char.upper()) - ord('A') + key) % 26
+            ciphertext += chr(newchar + ord('A')) if char.isupper() else chr(newchar + ord('a'))
         else:
-            ciphertext += char
+            ciphertext += char 
     return ciphertext
+
 
 def decrypt(ciphertext, key):
     plaintext = ""
-    for char in ciphertext.upper():
+    for char in ciphertext:
         if char.isalpha():
-            index = key.index(char)
-            plaintext += chr(index + ord('A'))
+            newchar = (ord(char.upper()) - ord('A') - key) % 26
+            plaintext += chr(newchar + ord('A')) if char.isupper() else chr(newchar + ord('a'))
         else:
             plaintext += char
     return plaintext
 
-plaintext = input("Enter plaintext: ")
-key = "XYZABCDEFGHIJKLMNOPQRSTUVW"
 
-ciphertext = encrypt(plaintext, key)
-print("Ciphertext:", ciphertext)
+txt = input("Enter message to encrypt: ")
+key = int(input("Enter key for encryption: "))
+ciphertext = encrypt(txt, key)
+print(f"Encrypted message: {ciphertext}")
 
-decrypted_text = decrypt(ciphertext, key)
-print("Decrypted text:", decrypted_text)
+plaintext = decrypt(ciphertext, key)
+print(f"Decrypted message: {plaintext}")
